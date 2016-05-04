@@ -7,7 +7,8 @@ void setup()
   //Used for knowing when every screen started
   frameAnimationStarted=frameCount;
   //
-  GAMEMODE = 6;
+  //GAMEMODE = 6;
+  GAMEMODE = 1;
   //How long controls are blocked
   controlsBlockedDuration=5;
   //Tiltind rate for press space bar to start message

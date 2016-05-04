@@ -1,10 +1,23 @@
 class ShooterGame {
   
+  PVector gameLimits;
+  PVector gameSize;
   
   float scrollSpeed;
-  int SCORE;
+  int score;
+  int hiscore;
+  
+  int previousBulletTime;
+  int framesBetweenBullets;
+  
+  int noControlsAtStartTime;
   
   ArrayList<Bullet> BulletsRemaining;
+  ArrayList<ScorePopUp> ScorePopUpsRemaining;
+  ArrayList<PowerUp> PowerUpsRemaining;
+  ArrayList<Enemy> EnemiesRemaining;
+  
+  Player player;
   
   
   
@@ -49,56 +62,44 @@ void activatePlayerControls(){
    {
         
      
-     if ( keyCode == LEFT && playerLocation.x >= gameOffsetCoord.x )
+     if ( keyCode == LEFT && player.position.x >= gameLimits.x )
      {
-       playerLocation.x -= raquetSpeed;
+       player.position.x -= player.speed;
        
-       if ( playerLocation.x <= gameOffsetCoord.x)
+       if ( player.position.x <= gameLimits.x)
        {
-            playerLocation.x = gameOffsetCoord.x;
+            player.position.x = gameLimits.x;
        }
        
 
      }
      
-     if ( keyCode == RIGHT && playerLocation.x <= gameOffsetCoord.x + (brickWidth*numberColumns) - raquetShape.width*raquetScaleMultiplier)
+     if ( keyCode == RIGHT && player.position.x <= gameLimits.x + gameSize.x - player.size.x)
      {
-       playerLocation.x += raquetSpeed;
+       player.position.x += player.speed;
        
-       if ( playerLocation.x >= gameOffsetCoord.x + (brickWidth*numberColumns) - raquetShape.width*raquetScaleMultiplier)
+       if ( player.position.x >= gameLimits.x + gameSize.x - player.size.x)
        {
-            playerLocation.x = gameOffsetCoord.x + (brickWidth*numberColumns) - raquetShape.width*raquetScaleMultiplier;
+            player.position.x = gameLimits.x + gameSize.x - player.size.x;
        }
 
      }
-     //if the ball is not stopped and the LASER powerup is on, and time from previous bullet has passed generate two bullets
+     //and time from previous bullet has passed generate two bullets
      if ( key == ' ' &&
-          raquetCurrentPowerUp == "LASER" &&
-          ballobject.isStopped == false  &&
           frameCount - previousBulletTime > framesBetweenBullets )
      {
 
         laserShotSound.cue(0);
         laserShotSound.play();
                    
-        ArkanoidGame.BulletsRemaining.add( new Bullet (playerLocation.x + ballobject.ballRadius, playerLocation.y) );
-        ArkanoidGame.BulletsRemaining.add( new Bullet (playerLocation.x + (raquetShape.width*raquetScaleMultiplier) - ballobject.ballRadius, playerLocation.y) );
+        ShooterGame.BulletsRemaining.add( new Bullet (player.position.x, player.position.y ) );
+        ShooterGame.BulletsRemaining.add( new Bullet (player.position.x + player.size.x, player.position.x) );
         
         //reset time from previous bullet
         previousBulletTime = frameCount;
     
      }
      
-     //if the ball is stopped release it
-     if ( key == ' ' && ballobject.isStopped == true )
-     {
-      
-         raquetHitSound.cue(0);
-         raquetHitSound.play();
-       
-       ballobject.isStopped = false;
-
-     }
      
    }
    

@@ -1,8 +1,8 @@
 class Bullet extends GameObject {
-  /*
-  PVector location;
-  PVector velocity;
-  PVector acceleration;
+ 
+  //PVector location;
+  //PVector velocity;
+  //PVector acceleration;
 
   boolean hasHit;
   boolean isVisible;
@@ -15,7 +15,7 @@ class Bullet extends GameObject {
   Bullet (float x1, float y1) {
 
     
-    location = new PVector(x1, y1);
+    position = new PVector(x1, y1);
    
     hasHit=false;
     isRemovable=false;
@@ -25,33 +25,34 @@ class Bullet extends GameObject {
     
   }
 
+
+
   // Method to update location
   void update() {
     
     
       // If any bullet is set to be removable, remove it 
-      for (int i = ArkanoidGame.BulletsRemaining.size() - 1; i >= 0; i--) {
+      for (int i = ShooterGame.BulletsRemaining.size() - 1; i >= 0; i--) {
                 
                 
-                if( (ArkanoidGame.BulletsRemaining.get(i)).isRemovable == true ||
-                    (ArkanoidGame.BulletsRemaining.get(i)).location.y < ArkanoidGame.gameOffsetCoord.y
+                if( (ShooterGame.BulletsRemaining.get(i)).isRemovable == true ||
+                    (ShooterGame.BulletsRemaining.get(i)).position.y < ShooterGame.gameLimits.y
                 ){
-                     ArkanoidGame.BulletsRemaining.remove(i);
+                     ShooterGame.BulletsRemaining.remove(i);
                  }
       }
     
     
     
     ////COLLISIONS****
-      //If bullet hits a brick...
-      for (int i = ArkanoidGame.BricksRemaining.size() - 1; i >= 0; i--) {
+      //If bullet hits a enemy...
+      for (int i = ShooterGame.EnemiesRemaining.size() - 1; i >= 0; i--) {
      
                  //println("hello");
-                 if( (ArkanoidGame.BricksRemaining.get(i)).isDead==false &&
-                     location.y >= (ArkanoidGame.BricksRemaining.get(i)).location.y &&
-                     location.y <= (ArkanoidGame.BricksRemaining.get(i)).location.y + ArkanoidGame.brickHeight &&
-                     location.x >= (ArkanoidGame.BricksRemaining.get(i)).location.x &&
-                     location.x <= (ArkanoidGame.BricksRemaining.get(i)).location.x + ArkanoidGame.brickWidth
+                 if( (ShooterGame.EnemiesRemaining.get(i)).isDead==false &&
+                     position.y >= (ShooterGame.EnemiesRemaining.get(i)).position.y &&
+                     position.y <= (ShooterGame.EnemiesRemaining.get(i)).position.y + (ShooterGame.EnemiesRemaining.get(i)).size.y &&
+                     position.x <= (ShooterGame.EnemiesRemaining.get(i)).position.x + (ShooterGame.EnemiesRemaining.get(i)).size.x
                    ){
                      
                      brickHitSound.cue(0);
@@ -59,33 +60,33 @@ class Bullet extends GameObject {
 
                      
                      //update score and hiscore if the bullet hits a brick
-                     ArkanoidGame.score+=(ArkanoidGame.BricksRemaining.get(i)).scoreStored;
+                     ShooterGame.score+=(ShooterGame.EnemiesRemaining.get(i)).scoreStored;
                      
-                     if( ArkanoidGame.score > ArkanoidGame.hiscore){
+                     if( ShooterGame.score > ShooterGame.hiscore){
                        
-                       ArkanoidGame.hiscore = ArkanoidGame.score;
+                       ShooterGame.hiscore = ShooterGame.score;
                        
                        
                      }
-                     ArkanoidGame.BrickCounterForGeneratingEnemies++;
+                     //ShooterGame.BrickCounterForGeneratingEnemies++;
                      hasHit=true;
                      isRemovable=true;
-                     (ArkanoidGame.BricksRemaining.get(i)).broken=true;
-                     if((ArkanoidGame.BricksRemaining.get(i)).unbreakable==false)
+                     //(ShooterGame.EnemiesRemaining.get(i)).broken=true;
+                     //if((ShooterGame.EnemiesRemaining.get(i)).unbreakable==false)
+                     //{
+                       (ShooterGame.EnemiesRemaining.get(i)).hitCount--;
+                     //}
+                     if((ShooterGame.EnemiesRemaining.get(i)).hitCount<=0)
                      {
-                       (ArkanoidGame.BricksRemaining.get(i)).hitCount--;
-                     }
-                     if((ArkanoidGame.BricksRemaining.get(i)).hitCount<=0)
-                     {
-                       (ArkanoidGame.BricksRemaining.get(i)).isDead=true;
-                       ArkanoidGame.ScorePopUpsRemaining.add(new ScorePopUp ((ArkanoidGame.BricksRemaining.get(i)).location.x, (ArkanoidGame.BricksRemaining.get(i)).location.y, (ArkanoidGame.BricksRemaining.get(i)).brickColor, (ArkanoidGame.BricksRemaining.get(i)).scoreStored));
-                       if((ArkanoidGame.BricksRemaining.get(i)).powerUpType=="NONE")
+                       (ShooterGame.EnemiesRemaining.get(i)).isDead=true;
+                       //ShooterGame.ScorePopUpsRemaining.add(new ScorePopUp ((ShooterGame.EnemiesRemaining.get(i)).position.x, (ShooterGame.EnemiesRemaining.get(i)).position.y, (ShooterGame.EnemiesRemaining.get(i)).enemyColor, (ShooterGame.EnemiesRemaining.get(i)).scoreStored));
+                       if((ShooterGame.EnemiesRemaining.get(i)).powerUpType=="NONE")
                         {
                           //Don't create a Powerup if the brick hasn't got any stored one. 
                         }
                         else
                         {
-                           ArkanoidGame.PowerUpsRemaining.add(new PowerUp ( (ArkanoidGame.BricksRemaining.get(i)).powerUpType, (ArkanoidGame.BricksRemaining.get(i)).location.x, (ArkanoidGame.BricksRemaining.get(i)).location.y) );
+                          // ShooterGame.PowerUpsRemaining.add(new PowerUp ( (ShooterGame.EnemiesRemaining.get(i)).powerUpType, (ShooterGame.EnemiesRemaining.get(i)).position.x, (ShooterGame.EnemiesRemaining.get(i)).position.y) );
                         }
                      }
                      
@@ -96,7 +97,7 @@ class Bullet extends GameObject {
 
       if ( hasHit == false ) {
         
-      location.y-=bulletSpeed;
+      position.y-=bulletSpeed;
       
       }
       
@@ -111,10 +112,10 @@ class Bullet extends GameObject {
     fill(RED);
     strokeWeight(4);
     //Vertical
-    ellipse( location.x, location.y, bulletSize, 3*bulletSize);
+    ellipse( position.x, position.y, bulletSize, 3*bulletSize);
     
   }
-*/
+
 }//End of class
   
   

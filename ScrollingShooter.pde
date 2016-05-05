@@ -628,6 +628,19 @@ void displayTexturedBackground(PShape shape) {
 
 }
 
+
+
+void keyPressed() {
+  
+ShooterGame.keyPressed();
+}
+
+void keyReleased() {
+  
+ShooterGame.keyReleased();
+  
+}
+
 //listener of osc msgs
 void oscEvent(OscMessage theOscMessage) {
   /* check if theOscMessage has the address pattern we are looking for. */  

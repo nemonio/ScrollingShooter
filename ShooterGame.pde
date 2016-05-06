@@ -18,7 +18,7 @@ class ShooterGame {
   ArrayList<Enemy> EnemiesRemaining;
   
   Player player;
-  
+    
   boolean upPressed;
   boolean downPressed;
   boolean leftPressed;
@@ -29,6 +29,12 @@ class ShooterGame {
   float ratioDiagonalMovement;
   
   
+  int numberOfLinesInScreen;
+  
+  Background backgroundlines;
+  
+  float distanceBetweenBackgroundLines;
+  
   
   ShooterGame()
   
@@ -36,7 +42,7 @@ class ShooterGame {
     gameLimits = new PVector(0,0);
     gameSize = new PVector(width,height);
     
-    scrollSpeed = 30;
+    scrollSpeed = 5;
     score = 0;
     hiscore = 0;
   
@@ -51,6 +57,7 @@ class ShooterGame {
     EnemiesRemaining = new ArrayList<Enemy>();
     
     player = new Player(width / 2, height / 2 , 100, 100);
+    //backgroundlines = new Background();
     
     
     upPressed = false;
@@ -61,6 +68,10 @@ class ShooterGame {
     numberOfKeysPressedAtTheSameTime = 0;
     
     ratioDiagonalMovement = 0.8f;
+    
+    numberOfLinesInScreen=10;
+    
+    backgroundlines = new Background();
   
   }  
   
@@ -72,7 +83,7 @@ class ShooterGame {
    
    activatePlayerControls();
    //controlsUP();
-   println(numberOfKeysPressedAtTheSameTime); 
+   println(ShooterGame.BulletsRemaining.size()); 
   
   }
 
@@ -84,7 +95,14 @@ class ShooterGame {
   {  
   
          drawGradientLinearBackground(GREEN);
+         
+         backgroundlines.display();
+         backgroundlines.update();
+         
          player.display();
+         
+         displayBullets();
+         removeBullets();
 
     
   }
@@ -92,7 +110,6 @@ class ShooterGame {
 
 void keyPressed() {
   
-  println("key"); 
   
   if ((key == UP)) {
     
@@ -300,7 +317,7 @@ void activatePlayerControls(){
         laserShotSound.play();
                    
         ShooterGame.BulletsRemaining.add( new Bullet (player.position.x, player.position.y ) );
-        ShooterGame.BulletsRemaining.add( new Bullet (player.position.x + player.size.x, player.position.x) );
+        ShooterGame.BulletsRemaining.add( new Bullet (player.position.x + player.size.x, player.position.y) );
         
         //reset time from previous bullet
         previousBulletTime = frameCount;
@@ -344,6 +361,35 @@ void activatePlayerControls(){
             player.position.y = gameSize.y;
        }
  }
+ 
+ void displayBullets()
+{
+   for (int i = 0; i < BulletsRemaining.size(); i++) {
+     
+     (BulletsRemaining.get(i)).display();
+     (BulletsRemaining.get(i)).update();
+     
+
+   }
+   
+}
+   
+ void removeBullets()
+{
+   
+         // If any bullet is set to be removable, remove it 
+      for (int i = ShooterGame.BulletsRemaining.size() - 1; i >= 0; i--) {
+                
+
+                      
+                if( (ShooterGame.BulletsRemaining.get(i)).isRemovable == true ||
+                    (ShooterGame.BulletsRemaining.get(i)).position.y < ShooterGame.gameLimits.y
+                ){
+                     ShooterGame.BulletsRemaining.remove(i);
+                 }
+      }
+
+} 
   
   
 }//END OF CLASS*************************************************

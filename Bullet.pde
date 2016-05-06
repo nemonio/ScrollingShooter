@@ -5,22 +5,20 @@ class Bullet extends GameObject {
   //PVector acceleration;
 
   boolean hasHit;
-  boolean isVisible;
   boolean isRemovable;
   
-  float bulletSize;
+  //float bulletSize=5;
   float bulletSpeed;
   
 
   Bullet (float x1, float y1) {
-
     
-    position = new PVector(x1, y1);
+    super(x1, y1, 5, 15);
    
     hasHit=false;
     isRemovable=false;
     
-    bulletSize=5;
+    
     bulletSpeed=20;
     
   }
@@ -31,21 +29,18 @@ class Bullet extends GameObject {
   void update() {
     
     
-      // If any bullet is set to be removable, remove it 
-      for (int i = ShooterGame.BulletsRemaining.size() - 1; i >= 0; i--) {
-                
-                
-                if( (ShooterGame.BulletsRemaining.get(i)).isRemovable == true ||
-                    (ShooterGame.BulletsRemaining.get(i)).position.y < ShooterGame.gameLimits.y
-                ){
-                     ShooterGame.BulletsRemaining.remove(i);
+
+    
+    
+                     if ( hasHit == false )
+                 {
+        
+                    position.y-=bulletSpeed;
+      
                  }
-      }
-    
-    
-    
     ////COLLISIONS****
       //If bullet hits a enemy...
+      /*
       for (int i = ShooterGame.EnemiesRemaining.size() - 1; i >= 0; i--) {
      
                  //println("hello");
@@ -101,18 +96,20 @@ class Bullet extends GameObject {
       
       }
       
+      */
+      
   }
 
   // Method to display
   void display() {
 
-    
     //Bevel lights
     stroke( hue(YELLOW), saturation(YELLOW), brightness(YELLOW), 70);
     fill(RED);
-    strokeWeight(4);
+    //strokeWeight(4);
     //Vertical
-    ellipse( position.x, position.y, bulletSize, 3*bulletSize);
+    
+    ellipse( position.x, position.y, 5, 15);
     
   }
 

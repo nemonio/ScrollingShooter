@@ -1,6 +1,6 @@
 void setup() 
 {
-  size(1280,720);
+  size(1280,720,P2D);
   //HSB color mode used for all the colos in the game
   colorMode(HSB, 360, 100, 100, 100);
   
@@ -82,6 +82,10 @@ color BRICK_GOLD_COLOR, BRICK_SILVER_COLOR;
 PShape mainScreenBKG, gameScreenBKG;
 PShape raquetShape, raquetLaserShape;
 PShape BKGTexture;
+
+
+
+PImage seamlessBKG;
 
 
 //game
@@ -228,6 +232,7 @@ void draw()
   void loadBitmaps()
   {
     //Not this time only, Bryan ;-)
+    seamlessBKG = loadImage("seamless.jpg");
   }
 
   
@@ -630,12 +635,12 @@ void displayTexturedBackground(PShape shape) {
 
 
 
-void keyPressed() {
+void keyPressed2() {
   
 ShooterGame.keyPressed();
 }
 
-void keyReleased() {
+void keyReleased2() {
   
 ShooterGame.keyReleased();
   

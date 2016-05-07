@@ -5,7 +5,7 @@ class Background extends GameObject {
   
   Background()
   {
-   super(0, 0, width, height);
+   super(0, 0, width, height, 0);
    
    BackgroundLinesRemaining = new ArrayList<BackgroundLine>();
    

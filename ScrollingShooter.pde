@@ -8,11 +8,11 @@ void setup()
   frameAnimationStarted=frameCount;
   //
   //GAMEMODE = 6;
-  GAMEMODE = 1;
+  GAMEMODE = 0;
   //How long controls are blocked
   controlsBlockedDuration=5;
   //Tiltind rate for press space bar to start message
-  tiltingDurationInFrames=3;
+  tiltingDurationInFrames=32;
   
   //disclaimer
   disclaimer="              DISCLAIMER\n\n\nThe copyright of the Arkanoid logo and\nthe sounds used in this college\nassignment are owned by Tayto.";
@@ -34,6 +34,9 @@ void setup()
   loadGame();
   
   loadAnimations();
+  
+  
+  menubackground = new Background();
   
   OscP5 = new OscP5(this,10000);
   
@@ -74,7 +77,7 @@ Minim minim;//audio context
 
   //colors
 //colorMode(HSB, 360, 100, 100, 100);
-color WHITE, BLACK, RED, BLUE, NIGHTSKY, GREY, GREEN, YELLOW;
+color WHITE, BLACK, RED, BLUE, NIGHTSKY, GREY, YELLOW, GREEN;
 color POWERUP_LASER_COLOR, POWERUP_EXPAND_COLOR, POWERUP_PLAYER_COLOR, POWERUP_SLOW_COLOR, POWERUP_CATCH_COLOR, POWERUP_BREAK_COLOR, POWERUP_3BALL_COLOR;
 color BRICK_GOLD_COLOR, BRICK_SILVER_COLOR;
 
@@ -86,10 +89,19 @@ PShape BKGTexture;
 
 
 PImage seamlessBKG;
+PImage menuScreenWithFonts;
+
+PImage spaceship;
+PImage cannonCrater;
+PImage cannonBase;
+PImage cannonTurret;
+
 
 
 //game
 ShooterGame ShooterGame;
+
+Background menubackground;
 
 //osc control
 import oscP5.*;
@@ -231,9 +243,18 @@ void draw()
   
   void loadBitmaps()
   {
-    //Not this time only, Bryan ;-)
-    seamlessBKG = loadImage("seamless.jpg");
-  }
+
+    seamlessBKG = loadImage("seamless5.jpg");
+    menuScreenWithFonts = loadImage("Menu.png");
+    
+    
+    spaceship = loadImage("spaceship.png");
+    cannonCrater = loadImage("cannonCrater.png");
+    cannonBase = loadImage("cannonBase.png");
+    cannonTurret = loadImage("cannonTurret.png");
+
+   
+   }
 
   
   
@@ -264,7 +285,7 @@ void activateMainMenuControls()
      if (key == ' ')
      {
        frameAnimationStarted=frameCount;
-       GAMEMODE = 4;
+       GAMEMODE = 1;
      }
      
      if (keyCode == SHIFT)
@@ -375,15 +396,22 @@ void runMainMenu()   //gamemode 0
   storyMusic.cue(0);
   storyMusic.play();
   
+  menubackground.display();
+  menubackground.update();
+  
+  
+  
+  image(menuScreenWithFonts, 0, 0);
+  /*
   BKGTexture.disableStyle();
   stroke(BLACK,30);
   fill(WHITE);
   displayTexturedBackground(BKGTexture);
-  
+
 
   blendMode(NORMAL);
   drawBackground(mainScreenBKG, width*0.5f, height*0.5f, 1);
-
+  */
 
   if(frameCount-frameAnimationStarted>controlsBlockedDuration)
   {
@@ -393,11 +421,14 @@ void runMainMenu()   //gamemode 0
      //tilting msg
      if(frameCount%(2*tiltingDurationInFrames)<tiltingDurationInFrames)
      {
-        displayText("Press SPACEBAR to play", drawingsFont, width*0.5f, (height*0.5f)+(height*0.20f), 30, NIGHTSKY, 100, true, 30);
+        displayText("Press\nSPACEBAR\nto play", drawingsFont, width*0.75f, (height*0.5f)+(height*0.25f), 30, BLACK, 100, true, 30);
      }
      
      //displayText("SHIFT: CREDITS\nSHIFT: CREDITS", drawingsFont, width*0.5f, (height*0.5f)+(height*0.35f), 30, NIGHTSKY, 100, true, 30);
   }
+  
+  
+  
 }
 
 void runGame()       //gamemode 1

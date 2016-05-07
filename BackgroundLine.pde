@@ -6,8 +6,8 @@ class BackgroundLine extends GameObject {
   
   BackgroundLine(float x, float y)
   {
-   super(x, y, width, y);
-   allbkg = getTiledImageFromSingleImage(0, 0, width, height, seamlessBKG, 1);
+   super(x, y, width, y, 0);
+   allbkg = createTiledImage(0, 0, width, height, seamlessBKG);
     
   }
   
@@ -63,7 +63,7 @@ class BackgroundLine extends GameObject {
     
     
     
-private PImage getTiledImageFromSingleImage(int x1, int y1, int x2, int y2,  PImage texture, float tint){
+private PImage createTiledImage(int x1, int y1, int x2, int y2,  PImage texture){
 
 
 float planeWidth = x2 - x1;
@@ -101,7 +101,7 @@ int startY = j * textureHeight;
 tiledImage.copy(texture, 0, 0, texture.width, texture.height, startX, startY,  textureWidth,  textureHeight);  
 
 
-if(restWidth > 0 && !((i+1) < timesWidth)){ //rest zeichnen, der ganz nicht hinpasste
+if(restWidth > 0 && !((i+1) < timesWidth)){
 
 
 tiledImage.copy(texture, 0, 0, (int)restWidth, texture.height , startX + textureWidth, startY, (int)restWidth,  textureHeight);

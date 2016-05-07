@@ -11,15 +11,16 @@ class Bullet extends GameObject {
   float bulletSpeed;
   
 
-  Bullet (float x1, float y1) {
+  Bullet (float x1, float y1, float angle) {
     
-    super(x1, y1, 5, 15);
+    super(x1, y1, 5, 15, 0);
    
     hasHit=false;
     isRemovable=false;
     
+    theta = angle;
     
-    bulletSpeed=20;
+    bulletSpeed=30;
     
   }
 
@@ -35,9 +36,18 @@ class Bullet extends GameObject {
                      if ( hasHit == false )
                  {
         
-                    position.y-=bulletSpeed;
+                    //position.y-=bulletSpeed;
+                    forward.x = sin(theta);
+                    forward.y = -cos(theta);
+                    velocity.x = forward.x;
+                    velocity.y = forward.y;    
+                    velocity.mult(bulletSpeed);    
+                    position.add(velocity);
       
                  }
+                 
+                 //bulletPos.add(PVector.mult(forward, 30)); // Start the bullet 30 units in front of the player
+
     ////COLLISIONS****
       //If bullet hits a enemy...
       /*
@@ -104,15 +114,76 @@ class Bullet extends GameObject {
   void display() {
 
     //Bevel lights
-    stroke( hue(YELLOW), saturation(YELLOW), brightness(YELLOW), 70);
-    fill(RED);
-    //strokeWeight(4);
+    
+    pushMatrix(); // reset the translation and rotation
+    translate(position.x+size.x/2, position.y+size.y/2);
+    rotate(theta);
+    strokeWeight(2);
+    stroke( hue(WHITE), saturation(WHITE), brightness(WHITE), 70);
+    fill(BLACK);
     //Vertical
     
-    ellipse( position.x, position.y, 5, 15);
+    ellipse( -size.x/2, -size.y/2, 5, 15);
     
+    popMatrix();
+    
+    /*
+    pushMatrix(); // reset the translation and rotation
+    translate(position.x+size.x/2, position.y+size.y/2);
+    rotate(turretTheta); // We want rotate to happen first, so you make the call AFTER translate    
+    image(cannonTurret, -size.x/2, -size.y/2, size.x, size.y);
+    popMatrix();
+    */
   }
 
 }//End of class
   
+  
+  
+  
+  
+  
+  
+  
+  /*
+  
+  
+  class Bullet extends GameObject
+{
+  float speed = 10.0f;
+  
+  
+  Bullet(float x, float y, float theta)
+  {
+    super(x,y);
+    this.theta = theta;
+  }
+  
+  void update()
+  {
+    forward.x = sin(theta);
+    forward.y = -cos(theta);
+    velocity.x = forward.x;
+    velocity.y = forward.y;    
+    velocity.mult(speed);    
+    position.add(velocity);
+    
+    if ((pos.x < 0) || (pos.x > width) || (pos.y < 0) || (pos.y > height))
+    {
+      bullets.remove(this);
+    }    
+}
+  
+  void render()
+  {
+    pushMatrix();
+    translate(pos.x, pos.y);
+    rotate(theta);
+    line(0, -5, 0, 5);
+    popMatrix();     
+  }
+}
+
+
+*/
   

@@ -6,6 +6,7 @@ class ShooterGame {
   float scrollSpeed;
   int score;
   int hiscore;
+  int level;
   
   int previousBulletTime;
   int framesBetweenBullets;
@@ -54,6 +55,7 @@ class ShooterGame {
     scrollSpeed = 2;
     score = 0;
     hiscore = 0;
+    level = 1;
   
     previousBulletTime = frameCount;
     framesBetweenBullets = 5;
@@ -127,6 +129,8 @@ class ShooterGame {
          
          
          player.display();
+         
+         displayScore();
          
     
   }
@@ -462,7 +466,18 @@ void generateCannons()
 
 } 
             
+void displayScore() {
+     
+    
+  textAlign(CENTER, TOP);
+  displayText("LEVEL "+ level, mainFont, width*0.5f, 10, 32, WHITE, 100, true, 100);
+  textAlign(LEFT, TOP);
+  displayText(""+score, mainFont, 100, 10, 32, WHITE, 100, true, 100);
   
+  textAlign(RIGHT, TOP);
+  displayText(""+hiscore, mainFont, 1140, 10, 32, WHITE, 100, true, 100);
+    
+}  
   
 }//END OF CLASS*************************************************
 

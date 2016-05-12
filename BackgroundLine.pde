@@ -18,7 +18,13 @@ class BackgroundLine extends GameObject {
   {
     
     //scrollSpeed
+    if (frameCount < ShooterGame.framesUntilBoss +  ShooterGame.noControlsAtStartTime)
+    {
     position.y += ShooterGame.scrollSpeed;
+    }
+    
+    
+    
     if( position.y >= 0 )
     {
       position.y = position.y - height;

@@ -13,10 +13,15 @@ class ShooterGame {
   
   int noControlsAtStartTime;
   
+  int framesUntilBoss;
+  boolean HasBossBeenCreated;
+  
   ArrayList<Bullet> BulletsRemaining;
+  ArrayList<Bullet> PlayerBulletsRemaining;
   ArrayList<ScorePopUp> ScorePopUpsRemaining;
   ArrayList<PowerUp> PowerUpsRemaining;
   ArrayList<Enemy> EnemiesRemaining;
+  ArrayList<Boss> BossesRemaining;
   
   Player player;
   float playerWidth;
@@ -61,11 +66,15 @@ class ShooterGame {
     framesBetweenBullets = 5;
     
     noControlsAtStartTime=frameCount;
+    framesUntilBoss=600;
+    HasBossBeenCreated=false;
     
     ScorePopUpsRemaining = new ArrayList<ScorePopUp>();
     BulletsRemaining = new ArrayList<Bullet>();
+    PlayerBulletsRemaining = new ArrayList<Bullet>();
     PowerUpsRemaining = new ArrayList<PowerUp>();
     EnemiesRemaining = new ArrayList<Enemy>();
+    BossesRemaining = new ArrayList<Boss>();
     
     playerWidth = 100;
     playerHeight= 50;
@@ -88,7 +97,7 @@ class ShooterGame {
     
     gameStartTime = frameCount;
     lastCannonTime = frameCount;
-    timeBetweenCannons = 250;
+    timeBetweenCannons = 100;
     
     cannonRadius=200;
   
@@ -124,9 +133,14 @@ class ShooterGame {
          displayEnemies();
          removeEnemies();
          
+         displayBosses();
+         removeBosses();
+         
          displayBullets();
          removeBullets();
          
+         displayPlayerBullets();
+         removePlayerBullets();         
          
          player.display();
          
@@ -344,8 +358,8 @@ void activatePlayerControls(){
         laserShotSound.cue(0);
         laserShotSound.play();
                    
-        ShooterGame.BulletsRemaining.add( new Bullet (player.position.x, player.position.y, 0) );
-        ShooterGame.BulletsRemaining.add( new Bullet (player.position.x + player.size.x, player.position.y, 0) );
+        ShooterGame.PlayerBulletsRemaining.add( new Bullet (player.position.x, player.position.y, 0, 30) );
+        ShooterGame.PlayerBulletsRemaining.add( new Bullet (player.position.x + player.size.x, player.position.y, 0,30) );
         
         //reset time from previous bullet
         previousBulletTime = frameCount;
@@ -422,6 +436,40 @@ void activatePlayerControls(){
 
 }
 
+
+ void displayPlayerBullets()
+{
+   for (int i = 0; i < PlayerBulletsRemaining.size(); i++) {
+     
+     (PlayerBulletsRemaining.get(i)).display();
+     (PlayerBulletsRemaining.get(i)).update();
+     
+
+   }
+   
+}
+   
+ void removePlayerBullets()
+{
+   
+         // If any bullet is set to be removable, remove it 
+      for (int i = ShooterGame.PlayerBulletsRemaining.size() - 1; i >= 0; i--) {
+                
+
+                      
+                if( (ShooterGame.PlayerBulletsRemaining.get(i)).isRemovable == true ||
+                    (ShooterGame.PlayerBulletsRemaining.get(i)).position.y < ShooterGame.gameLimits.y ||
+                    (ShooterGame.PlayerBulletsRemaining.get(i)).position.y > height ||
+                    (ShooterGame.PlayerBulletsRemaining.get(i)).position.x < ShooterGame.gameLimits.x ||
+                    (ShooterGame.PlayerBulletsRemaining.get(i)).position.x > width
+                ){
+                     ShooterGame.PlayerBulletsRemaining.remove(i);
+                 }
+      }
+
+}
+
+
  void displayEnemies()
 {
    for (int i = 0; i < EnemiesRemaining.size(); i++) {
@@ -451,18 +499,64 @@ void activatePlayerControls(){
 
 } 
 
+ void displayBosses()
+{
+   for (int i = 0; i < BossesRemaining.size(); i++) {
+     
+     (BossesRemaining.get(i)).display();
+     (BossesRemaining.get(i)).update();
+     
+
+   }
+   
+}
+   
+ void removeBosses()
+{
+   
+         // If any bullet is set to be removable, remove it 
+      for (int i = ShooterGame.BossesRemaining.size() - 1; i >= 0; i--) {
+                
+
+                      
+                if( (ShooterGame.BossesRemaining.get(i)).isRemovable == true ||
+                    (ShooterGame.BossesRemaining.get(i)).position.y > height
+                ){
+                     ShooterGame.BossesRemaining.remove(i);
+                 }
+      }
+
+} 
+
 
 
 void generateCannons()
          {
    
-        if (frameCount - lastCannonTime > timeBetweenCannons) {
+        if (frameCount - lastCannonTime > timeBetweenCannons &&
+            frameCount < ShooterGame.framesUntilBoss +  ShooterGame.noControlsAtStartTime
+        ) {
             //ShooterGame.ScorePopUpsRemaining.add(new ScorePopUp ((ShooterGame.EnemiesRemaining.get(i)).position.x, (ShooterGame.EnemiesRemaining.get(i)).position.y, (ShooterGame.EnemiesRemaining.get(i)).enemyColor, (ShooterGame.EnemiesRemaining.get(i)).scoreStored));
+            //add one tturret
             ShooterGame.EnemiesRemaining.add(new Enemy ("CANNON", random(0,width-cannonRadius), 0-cannonRadius) ) ;
-            println(ShooterGame.EnemiesRemaining.size());
-            println(ShooterGame.BulletsRemaining.size()); 
+            
+
+            
+            //println(ShooterGame.EnemiesRemaining.size());
+            //println(ShooterGame.BulletsRemaining.size()); 
             lastCannonTime = frameCount;
          }
+         
+         
+         
+        if (frameCount > ShooterGame.framesUntilBoss +  ShooterGame.noControlsAtStartTime &&
+            HasBossBeenCreated==false
+        )
+        {
+              //add boss
+            ShooterGame.BossesRemaining.add(new Boss () ) ;
+            HasBossBeenCreated=true;
+        }
 
 } 
             

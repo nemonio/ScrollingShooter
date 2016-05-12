@@ -38,8 +38,8 @@ class Enemy extends GameObject {
     
     timeCreated=frameCount;
     lastShotTime=frameCount;
-    timeBetweenShots=3;
-
+    //timeBetweenShots=3;
+    timeBetweenShots=120;
 
     switch(type) {
     case "CANNON":
@@ -73,14 +73,22 @@ class Enemy extends GameObject {
     
     //position.y+=ShooterGame.scrollSpeed;
     
-    
+        switch(enemyType) {
+               case "CANNON":
                     forward.x = sin(theta);
                     forward.y = -cos(theta);
                     velocity.x = forward.x;
                     velocity.y = forward.y;    
                     velocity.mult(ShooterGame.scrollSpeed);    
-                    position.add(velocity);    
-    
+                    position.add(velocity); 
+                    
+                    
+              break;
+              default:             // Default executes if the case labels
+              //println("None");   // don't match the switch parameter
+              break;
+              }  
+        
     //behaviour Rotate to player
     
     //turretTheta+=radians(1);
@@ -99,7 +107,7 @@ class Enemy extends GameObject {
         PVector forwardTurret = new PVector(sin(turretTheta+ PI/2), -cos(turretTheta+ PI/2));
         
         bulletPos.add(PVector.mult(forwardTurret, 70));       
-        ShooterGame.BulletsRemaining.add( new Bullet (bulletPos.x + size.x/2, bulletPos.y + size.y/2, turretTheta + PI/2) );
+        ShooterGame.BulletsRemaining.add( new Bullet (bulletPos.x + size.x/2, bulletPos.y + size.y/2, turretTheta + PI/2,7) );
         
         //reset time from previous bullet
         lastShotTime = frameCount;

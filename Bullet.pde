@@ -11,7 +11,7 @@ class Bullet extends GameObject {
   float bulletSpeed;
   
 
-  Bullet (float x1, float y1, float angle) {
+  Bullet (float x1, float y1, float angle, float velo) {
     
     super(x1, y1, 5, 15, 0);
    
@@ -20,7 +20,7 @@ class Bullet extends GameObject {
     
     theta = angle;
     
-    bulletSpeed=30;
+    bulletSpeed=velo;
     
   }
 

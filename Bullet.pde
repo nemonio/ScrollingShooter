@@ -11,10 +11,10 @@ class Bullet extends GameObject {
   float bulletSpeed;
   
 
-  Bullet (float x1, float y1, float angle, float velo) {
+  Bullet (float x1, float y1, float angle, float velo, float rad) {
     
-    super(x1, y1, 5, 15, 0);
-   
+    super(x1, y1, rad, 15, 0);
+    
     hasHit=false;
     isRemovable=false;
     
@@ -123,7 +123,7 @@ class Bullet extends GameObject {
     fill(BLACK);
     //Vertical
     
-    ellipse( -size.x/2, -size.y/2, 5, 15);
+    ellipse( -size.x/2, -size.y/2, size.x, size.y);
     
     popMatrix();
     

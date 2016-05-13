@@ -25,7 +25,7 @@ class Enemy extends GameObject {
 
   }
   
-  Enemy(String type, float x, float y)
+  Enemy(String type, float x, float y, int hitsNeeded)
   {
     super(x, y, ShooterGame.cannonRadius, ShooterGame.cannonRadius, PI);
     strokeWeight=3;
@@ -35,6 +35,9 @@ class Enemy extends GameObject {
     scoreStored=100;
     //shotAngle=0;
     cannonSizeDim=50;
+    hitCount=hitsNeeded;
+    
+    hitCount=10;
     
     timeCreated=frameCount;
     lastShotTime=frameCount;
@@ -101,18 +104,63 @@ class Enemy extends GameObject {
     
     
     //shooting
-      if ( frameCount - lastShotTime > timeBetweenShots )
-     {
+      if ( frameCount - lastShotTime > timeBetweenShots &&
+           isDead == false
+      ){
+        
         PVector bulletPos = new PVector(position.x, position.y);
         PVector forwardTurret = new PVector(sin(turretTheta+ PI/2), -cos(turretTheta+ PI/2));
         
         bulletPos.add(PVector.mult(forwardTurret, 70));       
-        ShooterGame.BulletsRemaining.add( new Bullet (bulletPos.x + size.x/2, bulletPos.y + size.y/2, turretTheta + PI/2,7) );
+        ShooterGame.BulletsRemaining.add( new Bullet (bulletPos.x + size.x/2, bulletPos.y + size.y/2, turretTheta + PI/2,7, 15) );
         
         //reset time from previous bullet
         lastShotTime = frameCount;
     
      }
+     
+     
+             ////COLLISIONS****
+      //If enemy hits a player bullet...
+      
+      for (int i = ShooterGame.PlayerBulletsRemaining.size() - 1; i >= 0; i--) {
+     
+                 //println("hello");
+                 if( isDead==false &&
+                     position.y <= (ShooterGame.PlayerBulletsRemaining.get(i)).position.y &&
+                     position.y + size.y >= (ShooterGame.PlayerBulletsRemaining.get(i)).position.y &&
+                     position.x <= (ShooterGame.PlayerBulletsRemaining.get(i)).position.x &&
+                     position.x + size.x >= (ShooterGame.PlayerBulletsRemaining.get(i)).position.x
+                   ){
+              
+                         brickHitSound.cue(0);
+                         brickHitSound.play();
+                         
+                         
+                         //update score and hiscore if the bullet hits a brick
+                         ShooterGame.score+=scoreStored;
+                         
+                         if( ShooterGame.score > ShooterGame.hiscore){
+                           
+                           ShooterGame.hiscore = ShooterGame.score;
+                           
+                           
+                         }
+                         hitCount--;
+                         ShooterGame.PlayerBulletsRemaining.remove(i);
+                         if(hitCount<=0)
+                         {
+                          isDead=true;
+                         
+                         
+                         }
+                      
+                      
+                     
+                     //break;
+                 }
+
+               }
     
     
     
@@ -133,6 +181,10 @@ class Enemy extends GameObject {
     
     
     image(cannonCrater, position.x, position.y, size.x, size.y);
+    
+    
+    if ( isDead == false  ){
+      
     image(cannonBase, position.x, position.y, size.x, size.y);
     
     pushMatrix(); // reset the translation and rotation
@@ -140,7 +192,7 @@ class Enemy extends GameObject {
     rotate(turretTheta); // We want rotate to happen first, so you make the call AFTER translate    
     image(cannonTurret, -size.x/2, -size.y/2, size.x, size.y);
     popMatrix();
-    
+    }
     
     //image(cannonTurret, 0, 0, size.x, size.y);
 
@@ -149,11 +201,12 @@ class Enemy extends GameObject {
     //println("None");   // don't match the switch parameter
     break;
     }  
-    
+    /*
     noFill();
     stroke(RED);
     strokeWeight(strokeWeight);
     rect( position.x+cannonSizeDim, position.y+cannonSizeDim, size.x-2*cannonSizeDim, size.y-2*cannonSizeDim);
+    */
 
 
    

@@ -63,7 +63,7 @@ class ShooterGame {
     level = 1;
   
     previousBulletTime = frameCount;
-    framesBetweenBullets = 5;
+    framesBetweenBullets = 10;
     
     noControlsAtStartTime=frameCount;
     framesUntilBoss=600;
@@ -143,6 +143,7 @@ class ShooterGame {
          removePlayerBullets();         
          
          player.display();
+         player.update();
          
          displayScore();
          
@@ -358,8 +359,8 @@ void activatePlayerControls(){
         laserShotSound.cue(0);
         laserShotSound.play();
                    
-        ShooterGame.PlayerBulletsRemaining.add( new Bullet (player.position.x, player.position.y, 0, 30) );
-        ShooterGame.PlayerBulletsRemaining.add( new Bullet (player.position.x + player.size.x, player.position.y, 0,30) );
+        ShooterGame.PlayerBulletsRemaining.add( new Bullet (player.position.x, player.position.y, 0, 20, 5) );
+        ShooterGame.PlayerBulletsRemaining.add( new Bullet (player.position.x + player.size.x, player.position.y, 0, 20, 5) );
         
         //reset time from previous bullet
         previousBulletTime = frameCount;
@@ -538,7 +539,7 @@ void generateCannons()
         ) {
             //ShooterGame.ScorePopUpsRemaining.add(new ScorePopUp ((ShooterGame.EnemiesRemaining.get(i)).position.x, (ShooterGame.EnemiesRemaining.get(i)).position.y, (ShooterGame.EnemiesRemaining.get(i)).enemyColor, (ShooterGame.EnemiesRemaining.get(i)).scoreStored));
             //add one tturret
-            ShooterGame.EnemiesRemaining.add(new Enemy ("CANNON", random(0,width-cannonRadius), 0-cannonRadius) ) ;
+            ShooterGame.EnemiesRemaining.add(new Enemy ("CANNON", random(0,width-cannonRadius), 0-cannonRadius, 2) ) ;
             
 
             
@@ -550,7 +551,8 @@ void generateCannons()
          
          
         if (frameCount > ShooterGame.framesUntilBoss +  ShooterGame.noControlsAtStartTime &&
-            HasBossBeenCreated==false
+            HasBossBeenCreated==false &&
+            ShooterGame.EnemiesRemaining.size()<1
         )
         {
               //add boss
@@ -572,9 +574,55 @@ void displayScore() {
   displayText(""+hiscore, mainFont, 1140, 10, 32, WHITE, 100, true, 100);
     
 }  
+
+void resetGame()
+{
+     gameLimits = new PVector(0,0);
+    gameSize = new PVector(width,height);
+    
+    scrollSpeed = 2;
+    score = 0;
+    //hiscore = 0;
+    level = 1;
+  
+    previousBulletTime = frameCount;
+    framesBetweenBullets = 10;
+    
+    noControlsAtStartTime=frameCount;
+    framesUntilBoss=600;
+    HasBossBeenCreated=false;
+    
+    ScorePopUpsRemaining = new ArrayList<ScorePopUp>();
+    BulletsRemaining = new ArrayList<Bullet>();
+    PlayerBulletsRemaining = new ArrayList<Bullet>();
+    PowerUpsRemaining = new ArrayList<PowerUp>();
+    EnemiesRemaining = new ArrayList<Enemy>();
+    BossesRemaining = new ArrayList<Boss>();
+    
+    playerWidth = 100;
+    playerHeight= 50;
+    player = new Player(width / 2, height*0.8f, playerWidth, playerHeight);
+    //backgroundlines = new Background();
+    
+    
+    upPressed = false;
+    downPressed = false;
+    leftPressed = false;
+    rightPressed = false;
+    
+    numberOfKeysPressedAtTheSameTime = 0;
+    
+    ratioDiagonalMovement = 0.8f;
+    
+    numberOfLinesInScreen=10;
+    
+    backgroundlines = new Background();
+    
+    gameStartTime = frameCount;
+    lastCannonTime = frameCount;
+    timeBetweenCannons = 100;
+    
+    cannonRadius=200; 
+}
   
 }//END OF CLASS*************************************************
-
-
-  
-  

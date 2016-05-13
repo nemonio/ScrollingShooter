@@ -2,6 +2,7 @@ class Player extends GameObject {
   
   float speed;
   int strokeWeight;
+  boolean isDead;
   //PVector size;
   
   Player()
@@ -15,7 +16,8 @@ class Player extends GameObject {
   {
     super(x, y, sizeX, sizeY, 0);
     speed=10;
-    strokeWeight=5; 
+    strokeWeight=5;
+    isDead=false;
   }
   
   
@@ -25,6 +27,32 @@ class Player extends GameObject {
     public void update()
   {
     
+    
+    
+        ////COLLISIONS****
+      //If player hits a enemy bullet...
+      
+      for (int i = ShooterGame.BulletsRemaining.size() - 1; i >= 0; i--) {
+     
+                 //println("hello");
+                 if( position.y <= (ShooterGame.BulletsRemaining.get(i)).position.y &&
+                     position.y + size.y >= (ShooterGame.BulletsRemaining.get(i)).position.y &&
+                     position.x <= (ShooterGame.BulletsRemaining.get(i)).position.x &&
+                     position.x + size.x >= (ShooterGame.BulletsRemaining.get(i)).position.x
+                   ){
+                     
+                     //brickHitSound.cue(0);
+                     //brickHitSound.play();
+                     
+                     
+
+                     isDead=true;
+
+                     break;
+                 }
+
+               }
+
     
     
     
@@ -40,13 +68,16 @@ class Player extends GameObject {
   
   void display() {
     
-    
     image(spaceship, position.x, position.y, size.x, size.y);
-
+    
+    if (isDead==true)
+    {
     noFill();
     stroke(RED);
     strokeWeight(strokeWeight);
     rect( position.x, position.y, size.x, size.y);
+    isDead=false;
+    }
 
    
   }

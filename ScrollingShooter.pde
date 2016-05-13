@@ -8,14 +8,14 @@ void setup()
   frameAnimationStarted=frameCount;
   //
   //GAMEMODE = 6;
-  GAMEMODE = 0;
+  GAMEMODE = 3;
   //How long controls are blocked
-  controlsBlockedDuration=5;
+  controlsBlockedDuration=120;
   //Tiltind rate for press space bar to start message
   tiltingDurationInFrames=32;
   
   //disclaimer
-  disclaimer="              DISCLAIMER\n\n\nThe copyright of the Arkanoid logo and\nthe sounds used in this college\nassignment are owned by Tayto.";
+  disclaimer="              DISCLAIMER\n\n\nThe copyright of the sounds used in \nthis college assignment is owned\nby Tayto.";
   tempDisclaimer="";
   disclaimerDuration=250;
   //story
@@ -285,6 +285,7 @@ void activateMainMenuControls()
      if (key == ' ')
      {
        frameAnimationStarted=frameCount;
+       
        GAMEMODE = 1;
      }
      
@@ -311,7 +312,10 @@ void activateGameOverControls()
      if (key == ' ')
      {
        frameAnimationStarted=frameCount;
-       GAMEMODE = 1;
+       
+       ShooterGame.resetGame();
+       
+       GAMEMODE = 0;
        //aniScale = 1.1;
        //Ani.from(this, 0.01, "aniScale", 1, Ani.BACK_IN);
      }
@@ -399,7 +403,7 @@ void runMainMenu()   //gamemode 0
   menubackground.display();
   menubackground.update();
   
-  
+  ShooterGame.noControlsAtStartTime=frameCount;
   
   image(menuScreenWithFonts, 0, 0);
   /*
@@ -450,7 +454,7 @@ void runTheEnd()   //gamemode 5
      activateGameOverControls();
   }
   
-  drawGradientLinearBackground(NIGHTSKY);
+  drawGradientLinearBackground(BLACK);
   
   textAlign(CENTER, CENTER);
   //(String text2display, PFont fuente, float xtext, float ytext, int size, color textColor, int opacityText, boolean shadow, int shadowOpacity)
@@ -459,7 +463,7 @@ void runTheEnd()   //gamemode 5
   
   //displayText("HAPPY XMAS", mainFont, width*0.5f, height*0.5f, 150, WHITE, 100, true, 100);
   
-  displayText("Press SPACEBAR to play again\nPress SHIFT to menu", drawingsFont, width*0.5f, (height*0.5f)+(height*0.25f), 30, WHITE, 100, true, 100);
+  displayText("Press SPACEBAR to menu", drawingsFont, width*0.5f, (height*0.5f)+(height*0.25f), 30, WHITE, 100, true, 100);
 }
 
 void runGameOver()   //gamemode 2
@@ -469,7 +473,7 @@ void runGameOver()   //gamemode 2
      activateGameOverControls();
   }
   
-  drawGradientLinearBackground(NIGHTSKY);
+  drawGradientLinearBackground(BLACK);
   
   textAlign(CENTER, CENTER);
   //(String text2display, PFont fuente, float xtext, float ytext, int size, color textColor, int opacityText, boolean shadow, int shadowOpacity)
@@ -484,7 +488,7 @@ void runDisclaimer()  //gamemode 3
 { 
   activateDisclaimerControls();
   
-  drawGradientLinearBackground(NIGHTSKY);
+  drawGradientLinearBackground(BLACK);
   
   
   

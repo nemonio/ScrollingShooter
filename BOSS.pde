@@ -18,7 +18,7 @@ class Boss extends Enemy {
    Boss()
    {
 
-     super("CANNON", width/2-800/2, 0-100);
+     super("CANNON", width/2-800/2, 0-100, 50);
      size = new PVector(800,100);
      turretsCoordinates = new PVector(-cannonSizeDim,-cannonSizeDim);
      turretsHztalSeparation=size.x/numberOfTurrets;
@@ -28,7 +28,7 @@ class Boss extends Enemy {
      
      for(int i=0; i<numberOfTurrets;i++)
      {
-       bossTurrets.add(new Enemy ("CANNON", position.x + turretsCoordinates.x + turretsHztalSeparation*i, position.y + turretsCoordinates.y) ) ;
+       bossTurrets.add(new Enemy ("CANNON", position.x + turretsCoordinates.x + turretsHztalSeparation*i, position.y + turretsCoordinates.y, 50) ) ;
      }
      
      bossSpeed=5;
@@ -63,8 +63,12 @@ class Boss extends Enemy {
    
    
            switch(bossMoveType) {
-               case "ENTERING":               
-               position.y++;
+               case "ENTERING":
+               //if(ShooterGame.EnemiesRemaining.size()<1)
+              // {
+                  position.y++;
+               //}
+               
                if (position.y > upPosition)
                      {
                        bossMoveType="GORIGHT";
@@ -113,18 +117,24 @@ class Boss extends Enemy {
 
    updateDisplayTurrets();
    
+   if(areAllTurretsDead())
+   {
+     frameAnimationStarted=frameCount;
+     GAMEMODE=2;
+   }
+   
 
  }
  
 
 void display() {
   
-    noFill();
-    stroke(RED);
+    fill(WHITE);
+    stroke(BLACK);
     strokeWeight(strokeWeight);
     rect( position.x, position.y, size.x, size.y);
     
-    rect( position.x + turretsCoordinates.x, position.y + turretsCoordinates.y, size.x, size.y);
+    //rect( position.x + turretsCoordinates.x, position.y + turretsCoordinates.y, size.x, size.y);
    
    
 
@@ -147,7 +157,30 @@ void updateDisplayTurrets()
    
 }     
      
+boolean areAllTurretsDead()
+{
+     int deadCounter=0;
+  
+     for (int i = 0; i < bossTurrets.size(); i++) {
      
+     if ((bossTurrets.get(i)).isDead==true)
+     {
+    
+        deadCounter++;           
+      
+     }
+     }
+     
+     if (deadCounter==bossTurrets.size())
+     {
+    
+        return true;           
+      
+     }
+     
+     else return false;
+     
+}
      
      
      

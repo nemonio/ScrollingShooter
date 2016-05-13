@@ -47,8 +47,8 @@ class Player extends GameObject {
                      
 
                      isDead=true;
-
-                     break;
+                     ShooterGame.BulletsRemaining.remove(i);
+                     //break;
                  }
 
                }

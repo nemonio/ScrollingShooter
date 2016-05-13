@@ -66,7 +66,7 @@ class ShooterGame {
     framesBetweenBullets = 10;
     
     noControlsAtStartTime=frameCount;
-    framesUntilBoss=600;
+    framesUntilBoss=1800;
     HasBossBeenCreated=false;
     
     ScorePopUpsRemaining = new ArrayList<ScorePopUp>();

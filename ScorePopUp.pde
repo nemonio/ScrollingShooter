@@ -1,8 +1,5 @@
 class ScorePopUp extends GameObject {
 
-  //PVector location;
-  //PVector velocity;
-  //PVector acceleration;
   color scorePopUpColor;
 
   boolean isDead;

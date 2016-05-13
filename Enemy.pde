@@ -127,10 +127,10 @@ class Enemy extends GameObject {
      
                  //println("hello");
                  if( isDead==false &&
-                     position.y <= (ShooterGame.PlayerBulletsRemaining.get(i)).position.y &&
-                     position.y + size.y >= (ShooterGame.PlayerBulletsRemaining.get(i)).position.y &&
-                     position.x <= (ShooterGame.PlayerBulletsRemaining.get(i)).position.x &&
-                     position.x + size.x >= (ShooterGame.PlayerBulletsRemaining.get(i)).position.x
+                     position.y + cannonSizeDim<= (ShooterGame.PlayerBulletsRemaining.get(i)).position.y &&
+                     position.y + size.y - cannonSizeDim >= (ShooterGame.PlayerBulletsRemaining.get(i)).position.y &&
+                     position.x + cannonSizeDim <= (ShooterGame.PlayerBulletsRemaining.get(i)).position.x &&
+                     position.x + size.x - cannonSizeDim >= (ShooterGame.PlayerBulletsRemaining.get(i)).position.x
                    ){
               
                          brickHitSound.cue(0);
